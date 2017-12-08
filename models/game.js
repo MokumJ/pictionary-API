@@ -2,10 +2,11 @@
 const mongoose = require('../config/database')
 const { Schema } = mongoose
 
-const cardSchema = new Schema({
-  symbol: { type: String, required: true },
-  visible: { type: Boolean, default: false },
-  won: { type: Boolean, default: false },
+const canvasSchema = new Schema({
+  word: { type: String, required: true },
+  
+  visible: { type: Boolean, default: false }, // if cleint is drawing
+  won: { type: Boolean, default: false }, // if word is guessed
 });
 
 const playerSchema = new Schema({
@@ -14,7 +15,7 @@ const playerSchema = new Schema({
 });
 
 const gameSchema = new Schema({
-  cards: [cardSchema],
+  canvas: [canvasSchema],
   players: [playerSchema],
   turn: { type: Number, default: 0 }, // player index
   started: { type: Boolean, default: false },

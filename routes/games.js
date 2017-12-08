@@ -34,8 +34,8 @@ module.exports = io => {
           userId: req.account._id,
           pairs: []
         }],
-        cards: utils.shuffle('✿✪♦✵♣♠♥✖'.repeat(2).split(''))
-          .map((symbol) => ({ visible: false, symbol }))
+        word: utils.shuffle(['alien', 'apple', 'nomadism', 'randomizing', 'rhizomatic'])
+          .map((word) => ({ visible: false, word }))
       }
 
       Game.create(newGame)
