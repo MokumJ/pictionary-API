@@ -4,7 +4,7 @@ const { Schema } = mongoose
 
 const canvasSchema = new Schema({
   word: { type: String, required: true },
-  
+
   visible: { type: Boolean, default: false }, // if cleint is drawing
   won: { type: Boolean, default: false }, // if word is guessed
 });
@@ -12,11 +12,13 @@ const canvasSchema = new Schema({
 const playerSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'users' },
   pairs: [String],
+  points: Number
 });
 
 const gameSchema = new Schema({
   canvas: [canvasSchema],
   players: [playerSchema],
+  currentWord: String
   turn: { type: Number, default: 0 }, // player index
   started: { type: Boolean, default: false },
   winnerId: { type: Schema.Types.ObjectId, ref: 'users' },
