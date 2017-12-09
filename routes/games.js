@@ -1,8 +1,9 @@
 // routes/games.js
+
 const router = require('express').Router()
 const passport = require('../config/auth')
 const { Game } = require('../models')
-const utils = require('../lib/utils')
+const words = require('../lib/utils')
 
 const authenticate = passport.authorize('jwt', { session: false })
 
@@ -34,9 +35,9 @@ module.exports = io => {
           userId: req.account._id,
           pairs: []
         }],
-        word: utils.shuffle(['alien', 'apple', 'nomadism', 'randomizing', 'rhizomatic'])
-          .map((word) => ({ visible: false, word }))
+        currentWord: words.getWord()
       }
+
 
       Game.create(newGame)
         .then((game) => {
