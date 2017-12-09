@@ -10,8 +10,11 @@ const playerSchema = new Schema({
 });
 
 const gameSchema = new Schema({
+
   players: [playerSchema],
-  currentWord: String,
+  word: String,
+  guesses: [],
+  isDrawer: {type: Boolean, default: false},
   started: { type: Boolean, default: false },
   winnerId: { type: Schema.Types.ObjectId, ref: 'users' },
   userId: { type: Schema.Types.ObjectId, ref: 'users' },

@@ -4,7 +4,7 @@ const router = require('express').Router()
 const passport = require('../config/auth')
 const { Game } = require('../models')
 const words = require('../lib/utils')
-
+const word = words.getWord()
 const authenticate = passport.authorize('jwt', { session: false })
 
 module.exports = io => {
@@ -35,7 +35,7 @@ module.exports = io => {
           userId: req.account._id,
           pairs: []
         }],
-        currentWord: words.getWord()
+        word: word
       }
 
 
@@ -66,6 +66,7 @@ module.exports = io => {
     .patch('/games/:id', authenticate, (req, res, next) => {
       const id = req.params.id
       const patchForGame = req.body
+      word: word
 
       Game.findById(id)
         .then((game) => {
