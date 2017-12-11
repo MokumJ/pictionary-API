@@ -76,11 +76,11 @@ module.exports = io => {
 
               const updatedGame = { ...game,
                  ...patchForGame,
-               hasTurn: true }
-
-
-             if (req.body.players[0].userId.toString() === req.account._id.toString())
-
+                 userId: req.account._id,
+                 players: [{
+                   userId: req.account._id,
+               hasTurn: true}]
+             }
 
 
 
