@@ -6,7 +6,7 @@ const { Game } = require('../models')
 const words = require('../lib/utils')
 const word = words.getWord()
 const authenticate = passport.authorize('jwt', { session: false })
-
+const hasTurn = false
 module.exports = io => {
   router
     .get('/games', (req, res, next) => {
@@ -33,9 +33,10 @@ module.exports = io => {
         userId: req.account._id,
         players: [{
           userId: req.account._id,
-          pairs: []
+
         }],
-        word: word
+        word: word,
+        hasTurn: hasTurn
       }
 
 
@@ -57,35 +58,45 @@ module.exports = io => {
         .then((game) => {
           io.emit('action', {
             type: 'GAME_UPDATED',
-            payload: game
+            payload: game,
           })
           res.json(game)
         })
         .catch((error) => next(error))
     })
+
     .patch('/games/:id', authenticate, (req, res, next) => {
-      const id = req.params.id
-      const patchForGame = req.body
-      word: word
+          const id = req.params.id
+          const patchForGame = req.body
 
-      Game.findById(id)
-        .then((game) => {
-          if (!game) { return next() }
-
-          const updatedGame = { ...game, ...patchForGame }
-
-          Game.findByIdAndUpdate(id, { $set: updatedGame }, { new: true })
+          console.log('string')
+          Game.findById(id)
             .then((game) => {
-              io.emit('action', {
-                type: 'GAME_UPDATED',
-                payload: game
-              })
-              res.json(game)
+              if (!game) { return next() }
+
+              const updatedGame = { ...game,
+                 ...patchForGame,
+               hasTurn: true }
+
+
+             if (req.body.players[0].userId.toString() === req.account._id.toString())
+
+
+
+
+              Game.findByIdAndUpdate(id, { $set: updatedGame }, { new: true })
+                .then((game) => {
+                  io.emit('action', {
+                    type: ('GAME_UPDATED'),
+                    payload: (game)
+                  })
+                  res.json(game)
+                })
+                .catch((error) => next(error))
             })
             .catch((error) => next(error))
         })
-        .catch((error) => next(error))
-    })
+
     .delete('/games/:id', authenticate, (req, res, next) => {
       const id = req.params.id
       Game.findByIdAndRemove(id)

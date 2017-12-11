@@ -6,14 +6,15 @@ const { Schema } = mongoose
 const playerSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'users' },
   pairs: [String],
-  points: Number
+  points: Number,
+
 });
 
 const gameSchema = new Schema({
 
   players: [playerSchema],
   word: String,
-  guesses: [],
+  guess: '',
   isDrawer: {type: Boolean, default: false},
   started: { type: Boolean, default: false },
   winnerId: { type: Schema.Types.ObjectId, ref: 'users' },
@@ -22,6 +23,7 @@ const gameSchema = new Schema({
   updatedAt: { type: Date, default: Date.now },
   lastCard: { type: Number },
   draw: { type: Boolean, default: false },
+  hasTurn: {type: Boolean, default: false},
 });
 
 module.exports = mongoose.model('games', gameSchema)
